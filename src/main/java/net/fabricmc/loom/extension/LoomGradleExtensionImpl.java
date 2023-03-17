@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import cx.rain.silkplugin.SpigotProvider;
 import org.gradle.api.Project;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
@@ -61,6 +62,9 @@ public class LoomGradleExtensionImpl extends LoomGradleExtensionApiImpl implemen
 
 	private LoomDependencyManager dependencyManager;
 	private MinecraftProvider minecraftProvider;
+
+	private SpigotProvider spigotProvider;
+
 	private MappingConfiguration mappingConfiguration;
 	private NamedMinecraftProvider<?> namedMinecraftProvider;
 	private IntermediaryMinecraftProvider<?> intermediaryMinecraftProvider;
@@ -111,6 +115,16 @@ public class LoomGradleExtensionImpl extends LoomGradleExtensionApiImpl implemen
 	@Override
 	public LoomDependencyManager getDependencyManager() {
 		return Objects.requireNonNull(dependencyManager, "Cannot get LoomDependencyManager before it has been setup");
+	}
+
+	@Override
+	public SpigotProvider getSpigotProvider() {
+		return spigotProvider;
+	}
+
+	@Override
+	public void setSpigotProvider(SpigotProvider spigotProvider) {
+		this.spigotProvider = spigotProvider;
 	}
 
 	@Override

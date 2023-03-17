@@ -280,6 +280,7 @@ public class RunConfig {
 			return Collections.emptyList();
 		}
 
+		// Codemc spigot does not provide bundler jar.
 		final BundleMetadata bundleMetadata = LoomGradleExtension.get(project).getMinecraftProvider().getServerBundleMetadata();
 
 		if (bundleMetadata == null) {

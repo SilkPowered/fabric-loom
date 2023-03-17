@@ -33,6 +33,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.function.Consumer;
 
+import cx.rain.silkplugin.SpigotProvider;
+import org.gradle.api.NamedDomainObjectProvider;
 import javax.inject.Inject;
 
 import org.gradle.api.Project;
@@ -73,6 +75,26 @@ public abstract class CompileConfiguration implements Runnable {
 
 	@Inject
 	protected abstract TaskContainer getTasks();
+		configurations.register(Constants.Configurations.MOD_COMPILE_CLASSPATH, configuration -> configuration.setTransitive(true));
+		configurations.register(Constants.Configurations.MOD_COMPILE_CLASSPATH_MAPPED, configuration -> configuration.setTransitive(false));
+		NamedDomainObjectProvider<Configuration> serverDeps = configurations.register(Constants.Configurations.MINECRAFT_SERVER_DEPENDENCIES, configuration -> configuration.setTransitive(false));
+		configurations.register(Constants.Configurations.MINECRAFT_RUNTIME_DEPENDENCIES, configuration -> configuration.setTransitive(false));
+		configurations.register(Constants.Configurations.MINECRAFT_DEPENDENCIES, configuration -> {
+			configuration.extendsFrom(serverDeps.get());
+			configuration.setTransitive(false);
+		});
+		configurations.register(Constants.Configurations.LOADER_DEPENDENCIES, configuration -> configuration.setTransitive(false));
+		configurations.register(Constants.Configurations.MINECRAFT, configuration -> configuration.setTransitive(false));
+
+		configurations.register(Constants.Configurations.SPIGOT, configuration -> configuration.setTransitive(false));
+
+		configurations.register(Constants.Configurations.INCLUDE, configuration -> configuration.setTransitive(false)); // Dont get transitive deps
+		configurations.register(Constants.Configurations.MAPPING_CONSTANTS);
+		configurations.register(Constants.Configurations.NAMED_ELEMENTS, configuration -> {
+			configuration.setCanBeConsumed(true);
+			configuration.setCanBeResolved(false);
+			configuration.extendsFrom(configurations.getByName(JavaPlugin.API_CONFIGURATION_NAME));
+		});
 
 	@Override
 	public void run() {
@@ -147,6 +169,12 @@ public abstract class CompileConfiguration implements Runnable {
 		extension.setMinecraftProvider(minecraftProvider);
 		minecraftProvider.provide();
 
+		final var spigotProvider = new SpigotProvider(configContext);
+		extension.setSpigotProvider(spigotProvider);
+		spigotProvider.provide();
+
+		final DependencyInfo mappingsDep = DependencyInfo.create(project, Constants.Configurations.MAPPINGS);
+		final MappingConfiguration mappingConfiguration = MappingConfiguration.create(project, configContext.serviceManager(), mappingsDep, minecraftProvider);
 		final DependencyInfo mappingsDep = DependencyInfo.create(getProject(), Configurations.MAPPINGS);
 		final MappingConfiguration mappingConfiguration = MappingConfiguration.create(getProject(), configContext.serviceManager(), mappingsDep, minecraftProvider);
 		extension.setMappingConfiguration(mappingConfiguration);
