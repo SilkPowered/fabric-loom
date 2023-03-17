@@ -27,6 +27,7 @@ package net.fabricmc.loom;
 import java.nio.file.Path;
 import java.util.List;
 
+import cx.rain.silkplugin.SpigotProvider;
 import org.gradle.api.Project;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.FileCollection;
@@ -60,6 +61,10 @@ public interface LoomGradleExtension extends LoomGradleExtensionAPI {
 	void setDependencyManager(LoomDependencyManager dependencyManager);
 
 	LoomDependencyManager getDependencyManager();
+
+	SpigotProvider getSpigotProvider();
+
+	void setSpigotProvider(SpigotProvider spigotProvider);
 
 	MinecraftProvider getMinecraftProvider();
 

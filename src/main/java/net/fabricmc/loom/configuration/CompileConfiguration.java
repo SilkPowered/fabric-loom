@@ -32,6 +32,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.function.Consumer;
 
+import cx.rain.silkplugin.SpigotProvider;
 import org.gradle.api.NamedDomainObjectProvider;
 import org.gradle.api.Project;
 import org.gradle.api.artifacts.Configuration;
@@ -85,6 +86,9 @@ public final class CompileConfiguration {
 		});
 		configurations.register(Constants.Configurations.LOADER_DEPENDENCIES, configuration -> configuration.setTransitive(false));
 		configurations.register(Constants.Configurations.MINECRAFT, configuration -> configuration.setTransitive(false));
+
+		configurations.register(Constants.Configurations.SPIGOT, configuration -> configuration.setTransitive(false));
+
 		configurations.register(Constants.Configurations.INCLUDE, configuration -> configuration.setTransitive(false)); // Dont get transitive deps
 		configurations.register(Constants.Configurations.MAPPING_CONSTANTS);
 		configurations.register(Constants.Configurations.NAMED_ELEMENTS, configuration -> {
@@ -192,6 +196,10 @@ public final class CompileConfiguration {
 		final MinecraftProvider minecraftProvider = jarConfiguration.getMinecraftProviderFunction().apply(configContext);
 		extension.setMinecraftProvider(minecraftProvider);
 		minecraftProvider.provide();
+
+		final var spigotProvider = new SpigotProvider(configContext);
+		extension.setSpigotProvider(spigotProvider);
+		spigotProvider.provide();
 
 		final DependencyInfo mappingsDep = DependencyInfo.create(project, Constants.Configurations.MAPPINGS);
 		final MappingConfiguration mappingConfiguration = MappingConfiguration.create(project, configContext.serviceManager(), mappingsDep, minecraftProvider);
