@@ -1,16 +1,11 @@
 package cx.rain.silkplugin;
 
-import com.google.common.base.Preconditions;
-
 import net.fabricmc.loom.LoomGradleExtension;
-import net.fabricmc.loom.LoomGradlePlugin;
 import net.fabricmc.loom.configuration.ConfigContext;
 
 import net.fabricmc.loom.configuration.DependencyInfo;
 import net.fabricmc.loom.configuration.providers.BundleMetadata;
-import net.fabricmc.loom.configuration.providers.minecraft.MinecraftLibraryProvider;
 import net.fabricmc.loom.configuration.providers.minecraft.MinecraftSourceSets;
-import net.fabricmc.loom.configuration.providers.minecraft.MinecraftVersionMeta;
 import net.fabricmc.loom.util.Constants;
 
 import net.fabricmc.loom.util.download.DownloadExecutor;
@@ -69,7 +64,6 @@ public class SpigotProvider {
 //		serverBundleMetadata = BundleMetadata.fromJar(spigotBundledServerJar.toPath());
 
 //		extractBundledServerJar();
-
 
 		MinecraftSourceSets.get(project).applyDependencies(
 				(configuration, name) -> project.getDependencies().add(configuration, dependency.getDepString()),

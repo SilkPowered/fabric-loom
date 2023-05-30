@@ -79,6 +79,8 @@ public abstract class LoomConfigurations implements Runnable {
 		registerNonTransitive(Constants.Configurations.MINECRAFT_NATIVES, Role.RESOLVABLE);
 		registerNonTransitive(Constants.Configurations.LOADER_DEPENDENCIES, Role.RESOLVABLE);
 
+		registerNonTransitive(Constants.Configurations.SPIGOT, Role.NONE);
+
 		registerNonTransitive(Constants.Configurations.MINECRAFT, Role.NONE);
 		registerNonTransitive(Constants.Configurations.INCLUDE, Role.RESOLVABLE);
 		registerNonTransitive(Constants.Configurations.MAPPING_CONSTANTS, Role.RESOLVABLE);
